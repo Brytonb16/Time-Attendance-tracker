@@ -1,5 +1,5 @@
 import { isAuthed } from '../../../../lib/auth';
 
 export async function GET() {
-  return Response.json({ authenticated: isAuthed() });
+  return Response.json({ authenticated: await isAuthed() });
 }
