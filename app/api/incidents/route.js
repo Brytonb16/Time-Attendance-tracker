@@ -3,7 +3,7 @@ import { getDb, initDb, getIncidentRule } from '../../../lib/db';
 import { requireAuth } from '../../../lib/auth';
 
 export async function POST(request) {
-  const authError = requireAuth();
+  const authError = await requireAuth();
   if (authError) return authError;
 
   await initDb();
