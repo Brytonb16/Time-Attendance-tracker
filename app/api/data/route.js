@@ -3,7 +3,7 @@ import { getDb, initDb, disciplineStage, typeLabel } from '../../../lib/db';
 import { requireAuth } from '../../../lib/auth';
 
 export async function GET() {
-  const authError = requireAuth();
+  const authError = await requireAuth();
   if (authError) return authError;
 
   await initDb();
