@@ -1,10 +1,14 @@
 
-import { sql } from '@vercel/postgres';
-import { initDb, disciplineStage, typeLabel } from '../../../lib/db';
+import { getDb, initDb, disciplineStage, typeLabel } from '../../../lib/db';
+import { requireAuth } from '../../../lib/auth';
 
 export async function GET() {
+  const authError = requireAuth();
+  if (authError) return authError;
+
   await initDb();
-  const employeesResult = await sql`
+  const db = getDb();
+  const employeesResult = await db.sql`
     SELECT e.*,
       COALESCE(SUM(CASE WHEN i.expires_at >= CURRENT_DATE THEN i.points ELSE 0 END), 0) AS active_points
     FROM employees e
@@ -13,7 +17,7 @@ export async function GET() {
     ORDER BY e.name ASC;
   `;
 
-  const incidentsResult = await sql`
+  const incidentsResult = await db.sql`
     SELECT i.*, e.name AS employee_name
     FROM incidents i
     JOIN employees e ON e.id = i.employee_id
