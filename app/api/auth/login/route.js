@@ -7,6 +7,6 @@ export async function POST(request) {
     return Response.json({ error: 'Invalid password' }, { status: 401 });
   }
 
-  setSessionCookie();
+  await setSessionCookie();
   return Response.json({ ok: true });
 }
